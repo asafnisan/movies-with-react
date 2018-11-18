@@ -5,6 +5,7 @@ import MovieDetail from './MovieDetail';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import { Button, Container, Header } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
+import movieCamera from './movie-camera.png'
 
 class App extends Component {
   render() {
@@ -12,7 +13,7 @@ class App extends Component {
     return (
       <Router>
         <div>
-          <h1>OMDB api | react</h1>
+          <img className='ui mini centered image' src={movieCamera}/>
           <Route exact path="/" component={StartPage} />
           <Route exact path="/SearchPage" component={SearchPage} />
           <Route path="/MovieDetail" component={MovieDetail} />

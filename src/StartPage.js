@@ -6,20 +6,43 @@ import client from './client'
 
 class StartPage extends React.Component {
     state = { 
-        movies: [] 
+        movies: [],
+        pageNumber: 1
     };
+    handleLoadMore = (e) => {
+        const search = this.refs.searchbox.value
+        const pageNum = this.state.pageNumber
+        client().getMovies(
+            search,
+            (movies) => {
+                this.setState({ movies: [...this.state.movies, ...movies] });
+                console.log(movies)
+            }, 
+            pageNum
+        );
+        this.setState({ pageNumber: this.state.pageNumber + 1})
+    }
     handleSubmit = (e) => {
         e.preventDefault()
         const search = this.refs.searchbox.value
+        const pageNum = this.state.pageNumber
         console.log(this.refs.searchbox.value);
-        client().getMovies(search,(movies) => {this.setState({ movies: movies })});
+        client().getMovies(
+            search,
+            (movies) => {
+                this.setState({ movies: [...this.state.movies, ...movies] });
+                console.log(movies)
+            }, 
+            pageNum
+        );
+        this.setState({ pageNumber: this.state.pageNumber + 1})
     }
     render() {
-        const movieList = this.state.movies.length != 0 ? this.state.movies.Search.map((val,i) => {
+        const movieList = this.state.movies.length != 0 ? this.state.movies.map((val,i) => {
             const title = val.Title;
             const year = val.Year;
             return (
-                <Container key={val.imdbID}>
+                <Container key={val.imdbID} onClick={()=>console.log('clicked')}>
                     <Rating />
                     <Link to="/MovieDetail">
                         {title}({year})
@@ -38,7 +61,7 @@ class StartPage extends React.Component {
                 </Container>
                 <Container>
                     {movieList}
-                    {movieList ? <Button>Load more</Button> : null}
+                    {movieList ? <Button onClick={this.handleLoadMore}>Load more</Button> : null}
                 </Container>
             </div>
         )
