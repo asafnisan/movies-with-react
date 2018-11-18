@@ -5,7 +5,7 @@ import MovieDetail from './MovieDetail';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import { Button, Container, Header } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
-import movieCamera from './movie-camera.png'
+import filmProjector from './film-projector_1.png'
 
 
 
@@ -54,7 +54,11 @@ componentDidMount() {
     return (
       <Router>
         <div>
-          <img className='ui mini centered image' src={movieCamera}/>
+          <hr style={{'border-color':'white','border':'0'}}/>
+          <hr style={{'border-color':'white','border':'0'}}/>
+          <img className='ui mini centered image' src={filmProjector}/>
+          <hr style={{'border-color':'white','border':'0'}}/>
+          <hr style={{'border-color':'white','border':'0'}}/>
           <Route exact path="/" component={this.StartPageWithHandlers} />
           <Route exact path="/SearchPage" component={SearchPage} />
           <Route path="/MovieDetail" component={this.detailPageWithHandlers} />
