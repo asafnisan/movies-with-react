@@ -3,8 +3,13 @@ import { Button, Container, Header } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import Movie from './Movie';
+import client from './client'
 
 class MovieDetail extends React.Component {
+    componentDidMount(){
+        console.log('reached movie:'+this.props.movieID)
+        client().getMovie(this.props.movieID, (movie) => console.log(movie))
+    }
     render() {
         const movie = Movie;
         return (

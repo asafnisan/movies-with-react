@@ -43,15 +43,15 @@ class StartPage extends React.Component {
             const year = val.Year;
             const id = val.imdbID;
             return (
-                <Container key={val.imdbID}>
+                <div key={val.imdbID}>
                     <div style={{display:'inline'}} id={id} onClick={() => this.props.onStar(id)}>
                         <Rating id={id} defaultRating={this.props.starredMovies.indexOf(id) === -1 ? 0 : 1} />
                     </div>
                     
-                    <Link to="/MovieDetail" id={id} >
+                    <Link to="/MovieDetail" id={id} onClick={() => this.props.toMovie(id)}>
                         {title}({year})
                     </Link>
-                </Container>
+                </div>
             )
         }) : null
         return (

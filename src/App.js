@@ -13,7 +13,8 @@ class App extends Component {
   state = {
     starredMovies: [
 
-    ]
+    ],
+    movieDetailID: ''
   }
   saveToLocalStorage = (starredMovie) => {
     const StarredMovies = JSON.parse(localStorage.getItem('starredMovies'));
@@ -29,11 +30,21 @@ class App extends Component {
   handleStar = (starredMovie) => {
     this.saveToLocalStorage(starredMovie)
   }
+  handleToMovieDetail = (movieID) => {
+    console.log('going to:' + movieID)
+    this.setState({ movieDetailID: movieID })
+  }
   StartPageWithHandlers = () => {
-  return (
-    <StartPage onStar={this.handleStar} starredMovies={this.state.starredMovies}/>
-  )
-}
+    return (
+      <StartPage onStar={this.handleStar} starredMovies={this.state.starredMovies} toMovie={this.handleToMovieDetail}/>
+    )
+  }
+  detailPageWithHandlers = () => {
+    return (
+      <MovieDetail movieID={this.state.movieDetailID} />
+    )
+  }
+
 componentDidMount() {
   localStorage.starredMovies = localStorage.starredMovies ? localStorage.getItem('starredMovies') : '[]';
   this.setState({ starredMovies: JSON.parse(localStorage.getItem('starredMovies')) }) 
@@ -46,7 +57,7 @@ componentDidMount() {
           <img className='ui mini centered image' src={movieCamera}/>
           <Route exact path="/" component={this.StartPageWithHandlers} />
           <Route exact path="/SearchPage" component={SearchPage} />
-          <Route path="/MovieDetail" component={MovieDetail} />
+          <Route path="/MovieDetail" component={this.detailPageWithHandlers} />
         </div>
       </Router>
     );
