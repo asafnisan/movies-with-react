@@ -41,10 +41,14 @@ class StartPage extends React.Component {
         const movieList = this.state.movies.length != 0 ? this.state.movies.map((val,i) => {
             const title = val.Title;
             const year = val.Year;
+            const id = val.imdbID;
             return (
-                <Container key={val.imdbID} onClick={()=>console.log('clicked')}>
-                    <Rating />
-                    <Link to="/MovieDetail">
+                <Container key={val.imdbID}>
+                    <div style={{display:'inline'}} id={id} onClick={() => this.props.onStar(id)}>
+                        <Rating id={id} defaultRating={this.props.starredMovies.indexOf(id) === -1 ? 0 : 1} />
+                    </div>
+                    
+                    <Link to="/MovieDetail" id={id} >
                         {title}({year})
                     </Link>
                 </Container>
