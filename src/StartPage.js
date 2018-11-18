@@ -24,18 +24,20 @@ class StartPage extends React.Component {
     }
     handleSubmit = (e) => {
         e.preventDefault()
-        const search = this.refs.searchbox.value
-        const pageNum = this.state.pageNumber
-        console.log(this.refs.searchbox.value);
-        client().getMovies(
-            search,
-            (movies) => {
-                this.setState({ movies: [...this.state.movies, ...movies] });
-                console.log(movies)
-            }, 
-            pageNum
-        );
-        this.setState({ pageNumber: this.state.pageNumber + 1})
+        this.setState({ pageNumber: 1, movies:[]}, () => {
+            const search = this.refs.searchbox.value
+            const pageNum = this.state.pageNumber
+            console.log(this.refs.searchbox.value);
+            client().getMovies(
+                search,
+                (movies) => {
+                    this.setState({ movies: [...this.state.movies, ...movies] });
+                    console.log(movies)
+                }, 
+                pageNum
+            );
+            this.setState({ pageNumber: this.state.pageNumber + 1})
+        })
     }
     render() {
         const movieList = this.state.movies.length != 0 ? this.state.movies.map((val,i) => {
@@ -56,6 +58,8 @@ class StartPage extends React.Component {
         }) : null
         return (
             <div>
+                <hr style={{'border-color':'white','border':'0'}}/>
+                <hr style={{'border-color':'white','border':'0'}}/>
                 <Container>
                     <form className='ui form' onSubmit={this.handleSubmit}>
                         <div className='field'>
@@ -63,9 +67,17 @@ class StartPage extends React.Component {
                         </div>
                     </form>
                 </Container>
+                <hr style={{'border-color':'white','border':'0'}}/>
+                <hr style={{'border-color':'white','border':'0'}}/>
                 <Container>
+                    <hr style={{'border-color':'white','border':'0'}}/>
+                    <hr style={{'border-color':'white','border':'0'}}/>
                     {movieList}
-                    {movieList ? <Button onClick={this.handleLoadMore}>Load more</Button> : null}
+                    <hr style={{'border-color':'white','border':'0'}}/>
+                    <hr style={{'border-color':'white','border':'0'}}/>
+                    <Container>
+                        {movieList ? <Button onClick={this.handleLoadMore}>Load more</Button> : null}
+                    </Container>
                 </Container>
             </div>
         )
