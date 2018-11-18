@@ -2,36 +2,20 @@ import React, { Component } from 'react';
 import { Header, Container, Rating, Dropdown, Button } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
-import Movies from './Movies';
+import client from './client'
 
-class SearchPage extends React.Component {
-    state = {};
-    componentDidMount() {
-        
-    }
+class StartPage extends React.Component {
+    state = { 
+        movies: [] 
+    };
     handleSubmit = (e) => {
         e.preventDefault()
+        const search = this.refs.searchbox.value
         console.log(this.refs.searchbox.value);
-    }
-    handleStar = (e, { rating, maxRating }) => {
-        console.log(e, rating, maxRating)
+        client().getMovies(search,(movies) => {this.setState({ movies: movies })});
     }
     render() {
-        const years = [
-            {
-                text: '2019',
-                value: '2019'
-            },
-            {
-                text: '2018',
-                value: '2018'
-            },
-            {
-                text: '2017',
-                value: '2017'
-            }
-        ]
-        const movieList = Movies.Search.map((val,i) => {
+        const movieList = this.state.movies.length != 0 ? this.state.movies.Search.map((val,i) => {
             const title = val.Title;
             const year = val.Year;
             return (
@@ -42,7 +26,7 @@ class SearchPage extends React.Component {
                     </Link>
                 </Container>
             )
-        })
+        }) : null
         return (
             <div>
                 <Container>
@@ -51,15 +35,14 @@ class SearchPage extends React.Component {
                             <input type='text' ref="searchbox" placeholder="search..."></input>
                         </div>
                     </form>
-                    <Dropdown placeholder='Select movie year' selection options={years}/>
                 </Container>
                 <Container>
                     {movieList}
-                    <Button>Load more</Button>
+                    {movieList ? <Button>Load more</Button> : null}
                 </Container>
             </div>
         )
     }
 }
 
-export default SearchPage
+export default StartPage
