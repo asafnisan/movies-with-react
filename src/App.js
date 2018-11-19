@@ -11,11 +11,13 @@ import filmProjector from './film-projector.png'
 
 class App extends Component {
   state = {
-    starredMovies: [
-
+    starredMovies: [],
+    listOfLoadedMovies: [
     ],
+    lastViewedMovie: {},
+    listOfViewedMovies: {},
     movieDetailID: '',
-    hover: false
+    pageNumber: 1,
   }
   saveToLocalStorage = (starredMovie) => {
     const StarredMovies = JSON.parse(localStorage.getItem('starredMovies'));
@@ -35,9 +37,29 @@ class App extends Component {
     console.log('going to:' + movieID)
     this.setState({ movieDetailID: movieID })
   }
+  handleQuerySubmit = (returnedListOfMovies) => {
+    this.setState({
+      listOfLoadedMovies: [...this.state.listOfLoadedMovies, ...returnedListOfMovies],
+      pageNumber: this.state.pageNumber + 1
+    })
+  }
+  handleLoadMore = (returnedListOfMovies) => {
+    this.setState({
+      listOfLoadedMovies: [...this.state.listOfLoadedMovies, ...returnedListOfMovies],
+      pageNumber: this.state.pageNumber + 1
+    })
+  }
   StartPageWithHandlers = () => {
     return (
-      <StartPage onStar={this.handleStar} starredMovies={this.state.starredMovies} toMovie={this.handleToMovieDetail}/>
+      <StartPage 
+        onStar={this.handleStar} 
+        starredMovies={this.state.starredMovies} 
+        toMovie={this.handleToMovieDetail}
+        listOfLoadedMovies={this.state.listOfLoadedMovies}
+        onSubmit={this.handleQuerySubmit}
+        pageNumber={this.state.pageNumber}
+        onLoadMore={this.handleLoadMore}
+      />
     )
   }
   detailPageWithHandlers = () => {
@@ -46,7 +68,11 @@ class App extends Component {
     console.log(starredMovies)
     const isStarred = starredMovies.indexOf(this.state.movieDetailID) === -1 ? 0 : 1
     return (
-      <MovieDetail movieID={this.state.movieDetailID} isStarred={isStarred}/>
+      <MovieDetail 
+        movieID={this.state.movieDetailID} 
+        isStarred={isStarred}
+        onLoadMore={this.handleLoadMore}
+      />
     )
   }
   componentDidMount() {

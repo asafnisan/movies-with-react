@@ -5,42 +5,40 @@ import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import client from './client'
 
 class StartPage extends React.Component {
-    state = { 
-        movies: [],
-        pageNumber: 1
-    };
     handleLoadMore = (e) => {
         const search = this.refs.searchbox.value
-        const pageNum = this.state.pageNumber
+        const pageNum = this.props.pageNumber
         client().getMovies(
             search,
-            (movies) => {
-                this.setState({ movies: [...this.state.movies, ...movies] });
-                console.log(movies)
-            }, 
+            (movies) => this.props.onLoadMore(movies), 
             pageNum
         );
-        this.setState({ pageNumber: this.state.pageNumber + 1})
     }
     handleSubmit = (e) => {
+        const search = this.refs.searchbox.value;
         e.preventDefault()
-        this.setState({ pageNumber: 1, movies:[]}, () => {
-            const search = this.refs.searchbox.value
-            const pageNum = this.state.pageNumber
-            console.log(this.refs.searchbox.value);
-            client().getMovies(
-                search,
-                (movies) => {
-                    this.setState({ movies: [...this.state.movies, ...movies] });
-                    console.log(movies)
-                }, 
-                pageNum
-            );
-            this.setState({ pageNumber: this.state.pageNumber + 1})
-        })
+        client().getMovies(
+            search,
+            (movies) => this.props.onSubmit(movies), 
+            this.props.pageNumber
+        );
+        // this.setState({ pageNumber: 1, movies:[]}, () => {
+        //     const search = this.refs.searchbox.value
+        //     const pageNum = this.state.pageNumber
+        //     console.log(this.refs.searchbox.value);
+        //     client().getMovies(
+        //         search,
+        //         (movies) => {
+        //             this.setState({ movies: [...this.state.movies, ...movies] });
+        //             console.log(movies)
+        //         }, 
+        //         pageNum
+        //     );
+        //     this.setState({ pageNumber: this.state.pageNumber + 1})
+        // })
     }
     render() {
-        const movieList = this.state.movies.length != 0 ? this.state.movies.map((val,i) => {
+        const movieList = this.props.listOfLoadedMovies.length != 0 ? this.props.listOfLoadedMovies.map((val,i) => {
             const title = val.Title;
             const year = val.Year;
             const id = val.imdbID;
