@@ -5,7 +5,7 @@ import MovieDetail from './MovieDetail';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import { Button, Container, Header } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
-import filmProjector from './film-projector_1.png'
+import filmProjector from './film-projector.png'
 
 
 
@@ -14,7 +14,8 @@ class App extends Component {
     starredMovies: [
 
     ],
-    movieDetailID: ''
+    movieDetailID: '',
+    hover: false
   }
   saveToLocalStorage = (starredMovie) => {
     const StarredMovies = JSON.parse(localStorage.getItem('starredMovies'));
@@ -40,15 +41,18 @@ class App extends Component {
     )
   }
   detailPageWithHandlers = () => {
+    const starredMovies = JSON.parse(localStorage.getItem('starredMovies'));
+    console.log('somestarredmovies');
+    console.log(starredMovies)
+    const isStarred = starredMovies.indexOf(this.state.movieDetailID) === -1 ? 0 : 1
     return (
-      <MovieDetail movieID={this.state.movieDetailID} />
+      <MovieDetail movieID={this.state.movieDetailID} isStarred={isStarred}/>
     )
   }
-
-componentDidMount() {
-  localStorage.starredMovies = localStorage.starredMovies ? localStorage.getItem('starredMovies') : '[]';
-  this.setState({ starredMovies: JSON.parse(localStorage.getItem('starredMovies')) }) 
-}
+  componentDidMount() {
+    localStorage.starredMovies = localStorage.starredMovies ? localStorage.getItem('starredMovies') : '[]';
+    this.setState({ starredMovies: JSON.parse(localStorage.getItem('starredMovies')) }) 
+  }
   render() {
     const path = window.location.pathname
     return (
@@ -56,7 +60,14 @@ componentDidMount() {
         <div>
           <hr style={{'border-color':'white','border':'0'}}/>
           <hr style={{'border-color':'white','border':'0'}}/>
-          <img className='ui mini centered image' src={filmProjector}/>
+          <div className='ui centered'
+          >
+            <img 
+              className='ui centered image' 
+              src={filmProjector} 
+              style={{width:'55px'}}
+            />
+          </div>
           <hr style={{'border-color':'white','border':'0'}}/>
           <hr style={{'border-color':'white','border':'0'}}/>
           <Route exact path="/" component={this.StartPageWithHandlers} />

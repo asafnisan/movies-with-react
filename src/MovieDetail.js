@@ -22,7 +22,7 @@ class MovieDetail extends React.Component {
                         <Button>back</Button>
                     </Link>
                     <img className='ui medium floated image rounded' src={movie.Poster}/>
-                    <Rating size='massive right floated'/>
+                    <Rating size='massive right floated' defaultRating={this.props.isStarred}/>
                 </Container>
                 <Container>
                     <h1>{movie.Title}</h1><h2>{movie.imdbRating}</h2>
