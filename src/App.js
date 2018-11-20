@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import StartPage from './StartPage';
-import SearchPage from './SearchPage';
 import MovieDetail from './MovieDetail';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import { Button, Container, Header } from 'semantic-ui-react';
@@ -12,8 +11,7 @@ import filmProjector from './film-projector.png'
 class App extends Component {
   state = {
     starredMovies: [],
-    listOfLoadedMovies: [
-    ],
+    listOfLoadedMovies: [],
     lastViewedMovie: {},
     listOfViewedMovies: {},
     movieDetailID: '',
@@ -39,11 +37,12 @@ class App extends Component {
   }
   handleQuerySubmit = (returnedListOfMovies) => {
     this.setState({
-      listOfLoadedMovies: [...this.state.listOfLoadedMovies, ...returnedListOfMovies],
-      pageNumber: this.state.pageNumber + 1
+      listOfLoadedMovies: [...returnedListOfMovies],
+      pageNumber: 2
     })
   }
   handleLoadMore = (returnedListOfMovies) => {
+    console.log(this.state.pageNumber)
     this.setState({
       listOfLoadedMovies: [...this.state.listOfLoadedMovies, ...returnedListOfMovies],
       pageNumber: this.state.pageNumber + 1
@@ -75,30 +74,22 @@ class App extends Component {
       />
     )
   }
+
   componentDidMount() {
     localStorage.starredMovies = localStorage.starredMovies ? localStorage.getItem('starredMovies') : '[]';
     this.setState({ starredMovies: JSON.parse(localStorage.getItem('starredMovies')) }) 
   }
   render() {
-    const path = window.location.pathname
     return (
       <Router>
         <div>
-          <hr style={{'border-color':'white','border':'0'}}/>
-          <hr style={{'border-color':'white','border':'0'}}/>
-          <div className='ui centered'
-          >
             <img 
               className='ui centered image' 
               src={filmProjector} 
-              style={{width:'55px'}}
+              style={{width:'55px','margin-top':'10px'}}
             />
-          </div>
-          <hr style={{'border-color':'white','border':'0'}}/>
-          <hr style={{'border-color':'white','border':'0'}}/>
           <Route exact path="/" component={this.StartPageWithHandlers} />
-          <Route exact path="/SearchPage" component={SearchPage} />
-          <Route path="/MovieDetail" component={this.detailPageWithHandlers} />
+          {<Route path="/MovieDetail" component={this.detailPageWithHandlers} />}
         </div>
       </Router>
     );

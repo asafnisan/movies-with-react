@@ -16,7 +16,7 @@ class MovieDetail extends React.Component {
     render() {
         const movie = this.state.movie;
         return (
-            <div className=''> 
+            <div className='' style={{'margin-top':'5px'}}> 
                 <Container>
                     <Link to={'/'}>
                         <Button>back</Button>

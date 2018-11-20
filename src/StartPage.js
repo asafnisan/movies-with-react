@@ -20,22 +20,8 @@ class StartPage extends React.Component {
         client().getMovies(
             search,
             (movies) => this.props.onSubmit(movies), 
-            this.props.pageNumber
+            1
         );
-        // this.setState({ pageNumber: 1, movies:[]}, () => {
-        //     const search = this.refs.searchbox.value
-        //     const pageNum = this.state.pageNumber
-        //     console.log(this.refs.searchbox.value);
-        //     client().getMovies(
-        //         search,
-        //         (movies) => {
-        //             this.setState({ movies: [...this.state.movies, ...movies] });
-        //             console.log(movies)
-        //         }, 
-        //         pageNum
-        //     );
-        //     this.setState({ pageNumber: this.state.pageNumber + 1})
-        // })
     }
     render() {
         const movieList = this.props.listOfLoadedMovies.length != 0 ? this.props.listOfLoadedMovies.map((val,i) => {
