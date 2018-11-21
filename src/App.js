@@ -5,18 +5,18 @@ import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import { Button, Container, Header } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import filmProjector from './film-projector.png'
-
-
+import client from './client'
 
 class App extends Component {
   state = {
-    starredMovies: [],
-    listOfLoadedMovies: [],
-    lastViewedMovie: {},
+    starredMovies: [], // should not be changed, working properly
+    listOfLoadedMovies: [], // should not be changed, working properly
     listOfViewedMovies: {},
     movieDetailID: '',
+    movieDetail: {},
     pageNumber: 1,
-    query:''
+    query:'', 
+    isLoading: false
   }
   saveToLocalStorage = (starredMovie) => {
     const StarredMovies = JSON.parse(localStorage.getItem('starredMovies'));
@@ -33,8 +33,21 @@ class App extends Component {
     this.saveToLocalStorage(starredMovie)
   }
   handleToMovieDetail = (movieID) => {
-    console.log('going to:' + movieID)
-    this.setState({ movieDetailID: movieID })
+    this.setState({
+      movieDetailID: movieID,
+    })
+    if(Object.keys(this.state.listOfViewedMovies).indexOf(movieID) !== -1) {
+      return
+    }
+    client().getMovie(movieID, (movie) => {
+      const viewedMovies = Object.assign({}, this.state.listOfViewedMovies)
+      viewedMovies[movieID] = movie
+      this.setState({
+        listOfViewedMovies: viewedMovies,
+        movieDetail: movie,
+      })
+    })
+    
   }
   handleQuerySubmit = (returnedListOfMovies) => {
     this.setState({
@@ -50,6 +63,11 @@ class App extends Component {
   }
   handleQuery = (query) => {
     this.setState({ query: query})
+  }
+  handleBackButton = () => {
+    this.setState({
+      movieDetail: {}
+    })
   }
   StartPageWithHandlers = () => {
     return (
@@ -68,14 +86,14 @@ class App extends Component {
   }
   DetailPageWithHandlers = () => {
     const starredMovies = JSON.parse(localStorage.getItem('starredMovies'));
-    console.log('somestarredmovies');
-    console.log(starredMovies)
     const isStarred = starredMovies.indexOf(this.state.movieDetailID) === -1 ? 0 : 1
     return (
       <MovieDetail 
         movieID={this.state.movieDetailID} 
         isStarred={isStarred}
-        onLoadMore={this.handleLoadMore}
+        movie={this.state.movieDetail}
+        viewedMovies={this.state.listOfViewedMovies}
+        onBack={this.handleBackButton}
       />
     )
   }

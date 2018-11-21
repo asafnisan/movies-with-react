@@ -6,31 +6,34 @@ import Movie from './Movie';
 import client from './client'
 
 class MovieDetail extends React.Component {
-    state = {
-        movie: {},
-    }
-    componentDidMount(){
-        console.log('reached movie:'+this.props.movieID)
-        client().getMovie(this.props.movieID, (movie) => this.setState({ movie: movie}))
-    }
+    // state = {
+    //     movie: {},
+    // }
+    // componentDidMount(){
+    //     console.log('reached movie:'+ this.props.movieID)
+    //     client().getMovie(this.props.movieID, (movie) => this.setState({ movie: movie}))
+    // }
     render() {
-        const movie = this.state.movie;
+        const isViewed = Object.keys(this.props.viewedMovies).indexOf(this.props.movieID) === -1 ? false : true
+        const trialMovie = isViewed ? this.props.viewedMovies[this.props.movieID] : this.props.movie
+        const keyLength = Object.keys(trialMovie)
+        const movie = trialMovie
         return (
             <div className='' style={{'margin-top':'5px'}}> 
                 <Container>
                     <Link to={'/'}>
-                        <Button>back</Button>
+                        <Button onClick={() => this.props.onBack()}>back</Button>
                     </Link>
-                    <img className='ui medium floated image rounded' src={movie.Poster}/>
+                    <img className='ui medium floated image rounded' src={keyLength === 0 ? null : movie.Poster}/>
                     <Rating size='massive right floated' defaultRating={this.props.isStarred}/>
                 </Container>
                 <Container>
-                    <h1>{movie.Title}</h1><h2>{movie.imdbRating}</h2>
-                    <p>{movie.Plot}</p>
+                    <h1>{keyLength === 0 ? null : movie.Title}</h1><h2>{keyLength === 0 ? null : movie.imdbRating}</h2>
+                    <p>{keyLength === 0 ? null : movie.Plot}</p>
                     <ul style={{'list-style':'none'}}>
-                        <li>Year: {movie.Year}</li>
-                        <li>Director: {movie.Director}</li>
-                        <li>Duration: {movie.Runtime}</li>
+                        <li>Year: {keyLength === 0 ? null : movie.Year}</li>
+                        <li>Director: {keyLength === 0 ? null : movie.Director}</li>
+                        <li>Duration: {keyLength === 0 ? null : movie.Runtime}</li>
                     </ul>
                 </Container>
             </div>
