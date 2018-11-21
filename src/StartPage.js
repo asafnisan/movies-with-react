@@ -6,23 +6,29 @@ import client from './client'
 
 class StartPage extends React.Component {
     handleLoadMore = (e) => {
-        console.log('loading more movies')
-        console.log(this.props.pageNumber)
+        this.props.onLoading(true)
         const search = this.refs.searchbox.value
         const pageNum = this.props.pageNumber
         client().getMovies(
             search,
-            (movies) => this.props.onLoadMore(movies), 
+            (movies) => {
+                this.props.onLoadMore(movies)
+                this.props.onLoading(false)
+            }, 
             pageNum
         );
     }
     handleSubmit = (e) => {
+        this.props.onLoading(true)
         const search = this.refs.searchbox.value;
         this.props.onQuery(search)
         e.preventDefault()
         client().getMovies(
             search,
-            (movies) => this.props.onSubmit(movies), 
+            (movies) => {
+                this.props.onSubmit(movies); 
+                this.props.onLoading(false)
+            }, 
             1
         );
     }
@@ -59,11 +65,12 @@ class StartPage extends React.Component {
                 <Container>
                     <hr style={{'border-color':'white','border':'0'}}/>
                     <hr style={{'border-color':'white','border':'0'}}/>
-                    {movieList}
+                    {this.props.isLoading && !movieList  ? <p style={{color:'red'}}>Fetching movies...</p> : null}
+                    {this.props.isLoading && movieList  ? movieList : movieList}
                     <hr style={{'border-color':'white','border':'0'}}/>
                     <hr style={{'border-color':'white','border':'0'}}/>
                     <Container>
-                        {movieList ? <Button onClick={this.handleLoadMore}>Load more</Button> : null}
+                        {movieList ? <Button onClick={this.handleLoadMore}>{this.props.isLoading && movieList  ? 'Fetching movies' : 'Load movies'}</Button> : null}
                     </Container>
                 </Container>
             </div>

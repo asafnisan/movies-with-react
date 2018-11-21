@@ -16,6 +16,7 @@ class App extends Component {
     movieDetail: {},
     pageNumber: 1,
     query:'', 
+    isLoading: false
   }
   saveToLocalStorage = (starredMovie) => {
     const StarredMovies = JSON.parse(localStorage.getItem('starredMovies'));
@@ -33,23 +34,32 @@ class App extends Component {
     this.saveToLocalStorage(starredMovie)
   }
   handleToMovieDetail = (movieID) => {
-    this.setState({
-      movieDetailID: movieID,
-    })
     if(Object.keys(this.state.listOfViewedMovies).indexOf(movieID) !== -1) {
       return
     }
+    this.setState({
+      movieDetailID: movieID,
+      isLoading: true
+    })
     client().getMovie(movieID, (movie) => {
       const viewedMovies = Object.assign({}, this.state.listOfViewedMovies)
       viewedMovies[movieID] = movie
       this.setState({
         listOfViewedMovies: viewedMovies,
         movieDetail: movie,
+        isLoading: false
       })
     })
     
   }
   handleQuerySubmit = (returnedListOfMovies) => {
+    if(this.state.query === '') {
+      this.setState({
+        listOfLoadedMovies: [],
+        pageNumber: 1
+      })
+      return
+    }
     this.setState({
       listOfLoadedMovies: [...returnedListOfMovies],
       pageNumber: 2
@@ -81,6 +91,8 @@ class App extends Component {
         onLoadMore={this.handleLoadMore}
         onQuery={this.handleQuery}
         query={this.state.query}
+        onLoading={(loadState) => this.setState({isLoading: loadState})}
+        isLoading={this.state.isLoading}
       />
     )
   }
@@ -94,6 +106,7 @@ class App extends Component {
         movie={this.state.movieDetail}
         viewedMovies={this.state.listOfViewedMovies}
         onBack={this.handleBackButton}
+        isLoading={this.state.isLoading}
       />
     )
   }

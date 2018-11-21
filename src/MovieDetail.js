@@ -4,27 +4,21 @@ import 'semantic-ui-css/semantic.min.css';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import Movie from './Movie';
 import client from './client'
+import grey from './grey.jpg'
 
 class MovieDetail extends React.Component {
-    // state = {
-    //     movie: {},
-    // }
-    // componentDidMount(){
-    //     console.log('reached movie:'+ this.props.movieID)
-    //     client().getMovie(this.props.movieID, (movie) => this.setState({ movie: movie}))
-    // }
     render() {
         const isViewed = Object.keys(this.props.viewedMovies).indexOf(this.props.movieID) === -1 ? false : true
         const trialMovie = isViewed ? this.props.viewedMovies[this.props.movieID] : this.props.movie
         const keyLength = Object.keys(trialMovie)
         const movie = trialMovie
         return (
-            <div className='' style={{'margin-top':'5px'}}> 
+            <div className='' style={{'margin-top':'5px'}}>
                 <Container>
                     <Link to={'/'}>
                         <Button onClick={() => this.props.onBack()}>back</Button>
                     </Link>
-                    <img className='ui medium floated image rounded' src={keyLength === 0 ? null : movie.Poster}/>
+                    <img className='ui medium floated image rounded' src={keyLength === 0 ? null : (this.props.isLoading ? grey :movie.Poster)}/>
                     <Rating size='massive right floated' defaultRating={this.props.isStarred}/>
                 </Container>
                 <Container>
