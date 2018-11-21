@@ -3,11 +3,9 @@ function client() {
     function getMovies(search,success,pageNum) {
         const apiEndpoint = 'http://www.omdbapi.com/?apikey=aebd27fd';
         const query = apiEndpoint + '&s=' + search + '&page=' + pageNum;
-        console.log(search)
         const movies = fetch(query).then(function(response){
             return response.json()
         }).then(function(myJson){
-            console.log(myJson.Search)
             success(myJson.Search);
         })
     }

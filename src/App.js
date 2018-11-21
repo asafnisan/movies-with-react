@@ -16,7 +16,6 @@ class App extends Component {
     movieDetail: {},
     pageNumber: 1,
     query:'', 
-    isLoading: false
   }
   saveToLocalStorage = (starredMovie) => {
     const StarredMovies = JSON.parse(localStorage.getItem('starredMovies'));
@@ -25,8 +24,9 @@ class App extends Component {
       localStorage.setItem('starredMovies',JSON.stringify(StarredMovies))
       this.setState({ starredMovies: StarredMovies })
     } else {
-      // unstar: remove the starred movie from localStorage
-      return 
+      const filteredStarredMovies = StarredMovies.filter((val) => val !== starredMovie)
+      localStorage.setItem('starredMovies', JSON.stringify(filteredStarredMovies))
+      this.setState({ starredMovies: filteredStarredMovies })
     }
   }
   handleStar = (starredMovie) => {
@@ -103,6 +103,7 @@ class App extends Component {
     this.setState({ starredMovies: JSON.parse(localStorage.getItem('starredMovies')) }) 
   }
   render() {
+    console.log(this.state.isLoading)
     return (
       <Router>
         <div>
