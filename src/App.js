@@ -16,6 +16,7 @@ class App extends Component {
     listOfViewedMovies: {},
     movieDetailID: '',
     pageNumber: 1,
+    query:''
   }
   saveToLocalStorage = (starredMovie) => {
     const StarredMovies = JSON.parse(localStorage.getItem('starredMovies'));
@@ -42,11 +43,13 @@ class App extends Component {
     })
   }
   handleLoadMore = (returnedListOfMovies) => {
-    console.log(this.state.pageNumber)
     this.setState({
       listOfLoadedMovies: [...this.state.listOfLoadedMovies, ...returnedListOfMovies],
       pageNumber: this.state.pageNumber + 1
     })
+  }
+  handleQuery = (query) => {
+    this.setState({ query: query})
   }
   StartPageWithHandlers = () => {
     return (
@@ -58,10 +61,12 @@ class App extends Component {
         onSubmit={this.handleQuerySubmit}
         pageNumber={this.state.pageNumber}
         onLoadMore={this.handleLoadMore}
+        onQuery={this.handleQuery}
+        query={this.state.query}
       />
     )
   }
-  detailPageWithHandlers = () => {
+  DetailPageWithHandlers = () => {
     const starredMovies = JSON.parse(localStorage.getItem('starredMovies'));
     console.log('somestarredmovies');
     console.log(starredMovies)
@@ -89,7 +94,7 @@ class App extends Component {
               style={{width:'55px','margin-top':'10px'}}
             />
           <Route exact path="/" component={this.StartPageWithHandlers} />
-          {<Route path="/MovieDetail" component={this.detailPageWithHandlers} />}
+          {<Route path="/MovieDetail" component={this.DetailPageWithHandlers} />}
         </div>
       </Router>
     );

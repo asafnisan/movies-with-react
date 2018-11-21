@@ -6,6 +6,8 @@ import client from './client'
 
 class StartPage extends React.Component {
     handleLoadMore = (e) => {
+        console.log('loading more movies')
+        console.log(this.props.pageNumber)
         const search = this.refs.searchbox.value
         const pageNum = this.props.pageNumber
         client().getMovies(
@@ -16,6 +18,7 @@ class StartPage extends React.Component {
     }
     handleSubmit = (e) => {
         const search = this.refs.searchbox.value;
+        this.props.onQuery(search)
         e.preventDefault()
         client().getMovies(
             search,
@@ -47,7 +50,7 @@ class StartPage extends React.Component {
                 <Container>
                     <form className='ui form' onSubmit={this.handleSubmit}>
                         <div className='field'>
-                            <input type='text' ref="searchbox" placeholder="search..."></input>
+                            <input type='text' ref="searchbox" placeholder="search..." value={this.props.query} onChange={(e) => this.props.onQuery(e.target.value)}></input>
                         </div>
                     </form>
                 </Container>
