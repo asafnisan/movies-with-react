@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Rating, Button } from 'semantic-ui-react';
+import { Container, Rating, Button, Dropdown } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import client from './client'
@@ -44,6 +44,7 @@ class SearchResultsPage extends React.Component {
     }
     render() {
         const isNewQuery = this.props.queryHistory !== this.props.query;
+
         const movieList = this.props.listOfLoadedMovies.length != 0 ? this.props.listOfLoadedMovies.map((val,i) => {
             const title = val.Title;
             const year = val.Year;
@@ -60,6 +61,9 @@ class SearchResultsPage extends React.Component {
                 </div>
             )
         }) : null
+
+        let yearList = this.props.listOfLoadedMovies ? this.props.listOfLoadedMovies.map(val => val.Year) : []
+        console.log(yearList)
         return (
             <div>
                 <hr style={{'borderColor':'white','border':'0'}}/>
@@ -70,6 +74,20 @@ class SearchResultsPage extends React.Component {
                             <input type='text' ref="searchbox" placeholder="search..." value={this.props.query} onChange={(e) => this.props.onQuery(e.target.value)}></input>
                         </div>
                     </form>
+                    {(movieList && !isNewQuery) || (movieList && isNewQuery && !this.props.isLoading)  ? 
+                        <div style={{marginTop:'10px'}}><Dropdown placeholder='Select year' options={
+                            [
+                                {
+                                    text:'hello1',
+                                    value:'hello1val'
+                                },
+                                {
+                                    text:'hello2',
+                                    value:'hello2val'
+                                }
+                            ]
+                        }/></div> : 
+                        null}
                 </Container>
                 <hr style={{'borderColor':'white','border':'0'}}/>
                 <hr style={{'borderColor':'white','border':'0'}}/>
