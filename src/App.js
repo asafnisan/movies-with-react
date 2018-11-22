@@ -40,7 +40,7 @@ class App extends Component {
       this.setState({
         movieDetailID: movieID,
         isLoading: false,
-        movieDetail: this.state.listOfViewedMovies[movieID]
+        movieDetail: this.state.listOfViewedMovies[movieID],
       })
       return
     }
@@ -85,7 +85,8 @@ class App extends Component {
   }
   handleBackButton = () => {
     this.setState({
-      movieDetail: {}
+      movieDetail: {},
+      selectedYears: []
     })
   }
   SearchResultsPageWithHandlers = () => {
