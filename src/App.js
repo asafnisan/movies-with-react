@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import StartPage from './StartPage';
+import SearchResultsPage from './SearchResultsPage';
 import MovieDetail from './MovieDetail';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import { Button, Container, Header } from 'semantic-ui-react';
@@ -81,9 +81,9 @@ class App extends Component {
       movieDetail: {}
     })
   }
-  StartPageWithHandlers = () => {
+  SearchResultsPageWithHandlers = () => {
     return (
-      <StartPage 
+      <SearchResultsPage 
         onStar={this.handleStar} 
         starredMovies={this.state.starredMovies} 
         toMovie={this.handleToMovieDetail}
@@ -128,7 +128,7 @@ class App extends Component {
               src={filmProjector} 
               style={{width:'55px','margin-top':'10px'}}
             />
-          <Route exact path="/" component={this.StartPageWithHandlers} />
+          <Route exact path="/" component={this.SearchResultsPageWithHandlers} />
           {<Route path="/MovieDetail" component={this.DetailPageWithHandlers} />}
         </div>
       </Router>

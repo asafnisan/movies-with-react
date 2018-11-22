@@ -4,7 +4,7 @@ import 'semantic-ui-css/semantic.min.css';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import client from './client'
 
-class StartPage extends React.Component {
+class SearchResultsPage extends React.Component {
     handleLoadMore = (e) => {
         this.props.onLoading(true)
         const search = this.refs.searchbox.value
@@ -87,7 +87,14 @@ class StartPage extends React.Component {
                                 'Fetching movies' : 
                                 'Load movies'}
                             </Button> : 
-                            null
+                            (movieList && isNewQuery && !this.props.isLoading ? (
+                                <Button onClick={this.handleLoadMore}>
+                                    {this.props.isLoading && movieList  ? 
+                                    'Fetching movies' : 
+                                    'Load movies'}
+                                </Button>) : 
+                                null 
+                            )
                         }
                     </Container>
                 </Container>
@@ -96,4 +103,4 @@ class StartPage extends React.Component {
     }
 }
 
-export default StartPage
+export default SearchResultsPage

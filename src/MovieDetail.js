@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import { Button, Container, Header, Rating } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
-import Movie from './Movie';
 import client from './client'
-import grey from './grey.jpg'
+import placeHolder from './placeHolder.jpg'
 
 class MovieDetail extends React.Component {
     render() {
@@ -18,7 +17,7 @@ class MovieDetail extends React.Component {
                     <Link to={'/'}>
                         <Button onClick={() => this.props.onBack()}>back</Button>
                     </Link>
-                    <img className='ui medium floated image rounded' src={keyLength === 0 ? null : (this.props.isLoading ? grey :movie.Poster)}/>
+                    <img className='ui medium floated image rounded' src={keyLength === 0 ? null : (this.props.isLoading ? placeHolder :movie.Poster)}/>
                     <div onClick={() => this.props.onStar(movie.imdbID)} style={{display:'inline','marginTop':'20px'}}>
                         <Rating size='massive' defaultRating={this.props.isStarred}/>
                     </div>
