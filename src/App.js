@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import SearchResultsPage from './SearchResultsPage';
 import MovieDetail from './MovieDetail';
-import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
-import { Button, Container, Header } from 'semantic-ui-react';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { Button, Container } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import filmProjector from './film-projector.png'
 import client from './client'
@@ -36,8 +36,14 @@ class App extends Component {
   }
   handleToMovieDetail = (movieID) => {
     if(Object.keys(this.state.listOfViewedMovies).indexOf(movieID) !== -1) {
+      this.setState({
+        movieDetailID: movieID,
+        isLoading: false,
+        movieDetail: this.state.listOfViewedMovies[movieID]
+      })
       return
     }
+
     this.setState({
       movieDetailID: movieID,
       isLoading: true

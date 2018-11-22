@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Header, Container, Rating, Dropdown, Button } from 'semantic-ui-react';
+import { Container, Rating, Button } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import client from './client'

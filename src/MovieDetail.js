@@ -4,6 +4,7 @@ import 'semantic-ui-css/semantic.min.css';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import client from './client'
 import placeHolder from './placeHolder.jpg'
+import notAvailable from './notAvailable.jpg'
 
 class MovieDetail extends React.Component {
     render() {
@@ -17,13 +18,40 @@ class MovieDetail extends React.Component {
                     <Link to={'/'}>
                         <Button onClick={() => this.props.onBack()}>back</Button>
                     </Link>
-                    <img className='ui medium floated image rounded' src={keyLength === 0 ? null : (this.props.isLoading ? placeHolder :movie.Poster)}/>
+                    <img 
+                        className='ui medium floated image rounded' 
+                        src={
+                            keyLength === 0 ? 
+                                null : 
+                                (this.props.isLoading ? 
+                                    placeHolder : 
+                                    (movie.Poster === "N/A" ? notAvailable : movie.Poster)
+                                )
+                            }
+                    />
                     <div onClick={() => this.props.onStar(movie.imdbID)} style={{display:'inline','marginTop':'20px'}}>
                         <Rating size='massive' defaultRating={this.props.isStarred}/>
                     </div>
                 </Container>
                 <Container>
-                    <h1>{keyLength === 0 ? null : (this.props.isLoading ? '...' :movie.Title)}</h1><h2>{keyLength === 0 ? null : (this.props.isLoading ? '...' :movie.imdbRating)}</h2>
+                    <h1>{
+                        keyLength === 0 ? null : 
+                            (this.props.isLoading ? 
+                                '...' :
+                                movie.Title
+                            )
+                        }
+                    </h1>
+                    <h2>{keyLength === 0 ? 
+                        null : 
+                        (this.props.isLoading ? 
+                            '...' :
+                            (movie.imdbRating === 'N/A' ? 
+                                'Rating not available' : 
+                                movie.imdbRating
+                            )
+                        )}
+                    </h2>
                     <p>{keyLength === 0 ? null : (this.props.isLoading ? '...' :movie.Plot)}</p>
                     <ul style={{'list-style':'none'}}>
                         <li>Year: {keyLength === 0 ? null : (this.props.isLoading ? '...' :movie.Year)}</li>
