@@ -19,15 +19,17 @@ class MovieDetail extends React.Component {
                         <Button onClick={() => this.props.onBack()}>back</Button>
                     </Link>
                     <img className='ui medium floated image rounded' src={keyLength === 0 ? null : (this.props.isLoading ? grey :movie.Poster)}/>
-                    <Rating size='massive right floated' defaultRating={this.props.isStarred}/>
+                    <div onClick={() => this.props.onStar(movie.imdbID)} style={{display:'inline','marginTop':'20px'}}>
+                        <Rating size='massive' defaultRating={this.props.isStarred}/>
+                    </div>
                 </Container>
                 <Container>
-                    <h1>{keyLength === 0 ? null : movie.Title}</h1><h2>{keyLength === 0 ? null : movie.imdbRating}</h2>
-                    <p>{keyLength === 0 ? null : movie.Plot}</p>
+                    <h1>{keyLength === 0 ? null : (this.props.isLoading ? '...' :movie.Title)}</h1><h2>{keyLength === 0 ? null : (this.props.isLoading ? '...' :movie.imdbRating)}</h2>
+                    <p>{keyLength === 0 ? null : (this.props.isLoading ? '...' :movie.Plot)}</p>
                     <ul style={{'list-style':'none'}}>
-                        <li>Year: {keyLength === 0 ? null : movie.Year}</li>
-                        <li>Director: {keyLength === 0 ? null : movie.Director}</li>
-                        <li>Duration: {keyLength === 0 ? null : movie.Runtime}</li>
+                        <li>Year: {keyLength === 0 ? null : (this.props.isLoading ? '...' :movie.Year)}</li>
+                        <li>Director: {keyLength === 0 ? null : (this.props.isLoading ? '...' :movie.Director)}</li>
+                        <li>Duration: {keyLength === 0 ? null : (this.props.isLoading ? '...' :movie.Runtime)}</li>
                     </ul>
                 </Container>
             </div>

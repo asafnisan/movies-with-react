@@ -12,27 +12,38 @@ class StartPage extends React.Component {
         client().getMovies(
             search,
             (movies) => {
-                this.props.onLoadMore(movies)
-                this.props.onLoading(false)
+                if(movies === undefined) {
+                    this.props.onLoadMore([]); 
+                    this.props.onLoading(false)
+                } else {
+                    this.props.onLoadMore(movies); 
+                    this.props.onLoading(false)
+                }
             }, 
             pageNum
         );
     }
     handleSubmit = (e) => {
-        this.props.onLoading(true)
+        this.props.onLoading(true);
         const search = this.refs.searchbox.value;
         this.props.onQuery(search)
         e.preventDefault()
         client().getMovies(
             search,
             (movies) => {
-                this.props.onSubmit(movies); 
-                this.props.onLoading(false)
+                if(movies === undefined) {
+                    this.props.onSubmit([]); 
+                    this.props.onLoading(false)
+                } else {
+                    this.props.onSubmit(movies); 
+                    this.props.onLoading(false)
+                }
             }, 
             1
         );
     }
     render() {
+        const isNewQuery = this.props.queryHistory !== this.props.query;
         const movieList = this.props.listOfLoadedMovies.length != 0 ? this.props.listOfLoadedMovies.map((val,i) => {
             const title = val.Title;
             const year = val.Year;
@@ -51,8 +62,8 @@ class StartPage extends React.Component {
         }) : null
         return (
             <div>
-                <hr style={{'border-color':'white','border':'0'}}/>
-                <hr style={{'border-color':'white','border':'0'}}/>
+                <hr style={{'borderColor':'white','border':'0'}}/>
+                <hr style={{'borderColor':'white','border':'0'}}/>
                 <Container>
                     <form className='ui form' onSubmit={this.handleSubmit}>
                         <div className='field'>
@@ -60,17 +71,24 @@ class StartPage extends React.Component {
                         </div>
                     </form>
                 </Container>
-                <hr style={{'border-color':'white','border':'0'}}/>
-                <hr style={{'border-color':'white','border':'0'}}/>
+                <hr style={{'borderColor':'white','border':'0'}}/>
+                <hr style={{'borderColor':'white','border':'0'}}/>
                 <Container>
-                    <hr style={{'border-color':'white','border':'0'}}/>
-                    <hr style={{'border-color':'white','border':'0'}}/>
+                    <hr style={{'borderColor':'white','border':'0'}}/>
+                    <hr style={{'borderColor':'white','border':'0'}}/>
                     {this.props.isLoading && !movieList  ? <p style={{color:'red'}}>Fetching movies...</p> : null}
-                    {this.props.isLoading && movieList  ? movieList : movieList}
-                    <hr style={{'border-color':'white','border':'0'}}/>
-                    <hr style={{'border-color':'white','border':'0'}}/>
+                    {this.props.isLoading && movieList && isNewQuery  ? <p style={{color:'red'}}>Fetching movies...</p> : movieList}
+                    <hr style={{'borderColor':'white','border':'0'}}/>
+                    <hr style={{'borderColor':'white','border':'0'}}/>
                     <Container>
-                        {movieList ? <Button onClick={this.handleLoadMore}>{this.props.isLoading && movieList  ? 'Fetching movies' : 'Load movies'}</Button> : null}
+                        {movieList && !isNewQuery ? 
+                            <Button onClick={this.handleLoadMore}>
+                                {this.props.isLoading && movieList  ? 
+                                'Fetching movies' : 
+                                'Load movies'}
+                            </Button> : 
+                            null
+                        }
                     </Container>
                 </Container>
             </div>

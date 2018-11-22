@@ -16,7 +16,8 @@ class App extends Component {
     movieDetail: {},
     pageNumber: 1,
     query:'', 
-    isLoading: false
+    isLoading: false,
+    queryHistory:''
   }
   saveToLocalStorage = (starredMovie) => {
     const StarredMovies = JSON.parse(localStorage.getItem('starredMovies'));
@@ -62,7 +63,8 @@ class App extends Component {
     }
     this.setState({
       listOfLoadedMovies: [...returnedListOfMovies],
-      pageNumber: 2
+      pageNumber: 2,
+      queryHistory: this.state.query
     })
   }
   handleLoadMore = (returnedListOfMovies) => {
@@ -93,6 +95,7 @@ class App extends Component {
         query={this.state.query}
         onLoading={(loadState) => this.setState({isLoading: loadState})}
         isLoading={this.state.isLoading}
+        queryHistory={this.state.queryHistory}
       />
     )
   }
@@ -100,7 +103,8 @@ class App extends Component {
     const starredMovies = JSON.parse(localStorage.getItem('starredMovies'));
     const isStarred = starredMovies.indexOf(this.state.movieDetailID) === -1 ? 0 : 1
     return (
-      <MovieDetail 
+      <MovieDetail
+        onStar={this.handleStar}
         movieID={this.state.movieDetailID} 
         isStarred={isStarred}
         movie={this.state.movieDetail}
@@ -116,7 +120,6 @@ class App extends Component {
     this.setState({ starredMovies: JSON.parse(localStorage.getItem('starredMovies')) }) 
   }
   render() {
-    console.log(this.state.isLoading)
     return (
       <Router>
         <div>
