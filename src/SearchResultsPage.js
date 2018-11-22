@@ -63,7 +63,13 @@ class SearchResultsPage extends React.Component {
         }) : null
 
         let yearList = this.props.listOfLoadedMovies ? this.props.listOfLoadedMovies.map(val => val.Year) : []
-        console.log(yearList)
+        let allYears = [];
+        yearList.forEach(year => {
+            if(allYears.indexOf(year) === -1) {
+                allYears.push(year)
+            }
+        })
+        allYears = allYears.sort()
         return (
             <div>
                 <hr style={{'borderColor':'white','border':'0'}}/>
@@ -76,16 +82,7 @@ class SearchResultsPage extends React.Component {
                     </form>
                     {(movieList && !isNewQuery) || (movieList && isNewQuery && !this.props.isLoading)  ? 
                         <div style={{marginTop:'10px'}}><Dropdown placeholder='Select year' options={
-                            [
-                                {
-                                    text:'hello1',
-                                    value:'hello1val'
-                                },
-                                {
-                                    text:'hello2',
-                                    value:'hello2val'
-                                }
-                            ]
+                            allYears.map(year => ({ text:year, value:year}))
                         }/></div> : 
                         null}
                 </Container>
