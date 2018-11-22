@@ -44,8 +44,10 @@ class SearchResultsPage extends React.Component {
     }
     render() {
         const isNewQuery = this.props.queryHistory !== this.props.query;
-
-        const movieList = this.props.listOfLoadedMovies.length != 0 ? this.props.listOfLoadedMovies.map((val,i) => {
+        
+        //filter(movie => {return this.props.selectedYears.indexOf(movie.Year) != -1}) : []
+        const movieList = this.props.listOfLoadedMovies.length != 0 ? this.props.listOfLoadedMovies.
+        map((val,i) => {
             const title = val.Title;
             const year = val.Year;
             const id = val.imdbID;
@@ -61,7 +63,9 @@ class SearchResultsPage extends React.Component {
                 </div>
             )
         }) : null
-
+        const filteredMovies = movieList !== null && movieList.length > 0 ? movieList.filter((mov) => (this.props.selectedYears.indexOf(mov.props.children[1].props.children[2]) != -1)) : []
+        console.log('here are new movies')
+        console.log(filteredMovies)
         let yearList = this.props.listOfLoadedMovies ? this.props.listOfLoadedMovies.map(val => val.Year) : []
         let allYears = [];
         yearList.forEach(year => {
@@ -81,10 +85,24 @@ class SearchResultsPage extends React.Component {
                         </div>
                     </form>
                     {(movieList && !isNewQuery) || (movieList && isNewQuery && !this.props.isLoading)  ? 
-                        <div style={{marginTop:'10px'}}><Dropdown placeholder='Select year' options={
-                            allYears.map(year => ({ text:year, value:year}))
-                        }/></div> : 
-                        null}
+                        <div style={{marginTop:'10px'}}>
+                            <Dropdown ref='dropdown'
+                                placeholder='Select year' 
+                                scrolling
+                                multiple
+                                selection
+                                options={
+                                    allYears.map(year => ({ text:year, value:year}))
+                                }
+                                onChange={(e, {value}) => {
+                                    //console.log(value);
+                                    this.props.onSelectYears(value)
+                                }
+                                }
+                            />
+                        </div> : 
+                        null
+                    }
                 </Container>
                 <hr style={{'borderColor':'white','border':'0'}}/>
                 <hr style={{'borderColor':'white','border':'0'}}/>
@@ -92,7 +110,7 @@ class SearchResultsPage extends React.Component {
                     <hr style={{'borderColor':'white','border':'0'}}/>
                     <hr style={{'borderColor':'white','border':'0'}}/>
                     {this.props.isLoading && !movieList  ? <p style={{color:'red'}}>Fetching movies...</p> : null}
-                    {this.props.isLoading && movieList && isNewQuery  ? <p style={{color:'red'}}>Fetching movies...</p> : movieList}
+                    {this.props.isLoading && movieList && isNewQuery  ? <p style={{color:'red'}}>Fetching movies...</p> : (filteredMovies.length > 0 ? filteredMovies : movieList)}
                     <hr style={{'borderColor':'white','border':'0'}}/>
                     <hr style={{'borderColor':'white','border':'0'}}/>
                     <Container>

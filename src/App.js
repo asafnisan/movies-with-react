@@ -17,7 +17,8 @@ class App extends Component {
     pageNumber: 1,
     query:'', 
     isLoading: false,
-    queryHistory:''
+    queryHistory:'',
+    selectedYears: []
   }
   saveToLocalStorage = (starredMovie) => {
     const StarredMovies = JSON.parse(localStorage.getItem('starredMovies'));
@@ -102,6 +103,8 @@ class App extends Component {
         onLoading={(loadState) => this.setState({isLoading: loadState})}
         isLoading={this.state.isLoading}
         queryHistory={this.state.queryHistory}
+        onSelectYears={(years) => this.setState({ selectedYears: years })}
+        selectedYears={this.state.selectedYears}
       />
     )
   }
